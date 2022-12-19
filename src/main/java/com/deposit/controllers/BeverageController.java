@@ -1,5 +1,6 @@
 package com.deposit.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,13 @@ public class BeverageController {
     @Autowired
     private BeverageRepository repository;
 
-
-    @PostMapping (value = "/beverage")
-    public ResponseEntity<Beverage> registerBeverage(@RequestBody Beverage Beverage){
-        Beverage result = repository.save(Beverage);
+    @PostMapping (value = "/beverages")
+    public ResponseEntity<Beverage> registerBeverage(@RequestBody Beverage beverage){
+        Beverage result = repository.save(beverage);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
-    @GetMapping(value = "/beverage/{id}")
+    @GetMapping(value = "/beverages/{id}")
     public ResponseEntity<?> searchBeverage(@PathVariable(value = "id") int id){
         Object result = repository.findById(id);
         if (repository.existsById(id)) {
@@ -36,7 +36,13 @@ public class BeverageController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unregistered Beverage");
     }
 
-    @PutMapping(value = "/beverage/{id}")
+    @GetMapping(value = "/beverages")
+    public ResponseEntity<Object> allBeverages(Beverage beverage){
+      Object result = repository.findAll();
+      return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PutMapping(value = "/beverages/{id}")
     ResponseEntity<?> updateBeverage(@RequestBody Beverage newBeverage, @PathVariable int id) {
       if (!repository.existsById(id)) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("unregistered Beverage.");
@@ -49,7 +55,7 @@ public class BeverageController {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @DeleteMapping(value = "/beverage/{id}")
+    @DeleteMapping(value = "/beverages/{id}")
     ResponseEntity<String> deleteBeverage(@PathVariable("id") int id) {
       if(repository.existsById(id)) {
         repository.deleteById(id);
