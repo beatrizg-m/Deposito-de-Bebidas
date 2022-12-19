@@ -1,7 +1,9 @@
 package com.deposit.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +19,7 @@ import com.deposit.repositories.BeverageRepository;
 
 @RestController
 public class BeverageController {
-    
+  
     @Autowired
     private BeverageRepository repository;
 
@@ -36,9 +38,11 @@ public class BeverageController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unregistered Beverage");
     }
 
+    
     @GetMapping(value = "/beverages")
-    public ResponseEntity<Object> allBeverages(Beverage beverage){
-      Object result = repository.findAll();
+    public ResponseEntity<Object> allBeverages(){
+      Pageable pageable = PageRequest.of(0, 5);
+      Page<Beverage> result = repository.findAll(pageable);
       return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -64,4 +68,6 @@ public class BeverageController {
 
       return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("unregistered id");
     }
+
+    
 }

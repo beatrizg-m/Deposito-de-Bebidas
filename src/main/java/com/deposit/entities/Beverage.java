@@ -3,7 +3,6 @@ package com.deposit.entities;
 import java.math.BigInteger;
 
 import org.hibernate.validator.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
