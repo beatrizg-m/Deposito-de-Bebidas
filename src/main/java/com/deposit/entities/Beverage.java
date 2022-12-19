@@ -15,7 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "BeverageRepository")
+@Table(name = "beverages")
 public class Beverage {
      
 
@@ -31,7 +31,7 @@ public class Beverage {
     @Column(name = "alcoholic")
     private Boolean alcoholic;
 
-    @Column(name = "alcoholicStrength")
+    @Column(name = "alcoholic_strength")
     private int alcoholicStrength;
 
     @Column(name = "price")
@@ -40,7 +40,7 @@ public class Beverage {
     @Column(name = "stock")
     private int stock;
 
-    @Column(name = "volumeMl")
+    @Column(name = "volume_ml")
     private int volumeMl;
    
     @JsonCreator
