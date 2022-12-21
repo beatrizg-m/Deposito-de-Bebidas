@@ -1,13 +1,7 @@
 package com.deposit.controllers;
 
-
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,10 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deposit.entities.Beverage;
 import com.deposit.repositories.BeverageRepository;
-
-
-
-
 
 @RestController
 public class BeverageController {
@@ -52,11 +42,11 @@ public class BeverageController {
 
     
     @GetMapping(value = "/beverages")
-    public ResponseEntity<Object> allBeverages(
-        @RequestParam(required = false, defaultValue = "0") String page_number,
-        @RequestParam(required = false, defaultValue = "5") String page_size,
+    public ResponseEntity<Page<Beverage>> allBeverages(
+        @RequestParam(required = false, defaultValue = "0") int page_number,
+        @RequestParam(required = false, defaultValue = "5") int page_size,
         @RequestParam(required = false) String sort,
-        @RequestParam(required = false) String alcoholic
+        @RequestParam(required = false) Boolean alcoholic
       ){
         Pageable pageable;
         
@@ -67,14 +57,14 @@ public class BeverageController {
           } else {
             sortConfig = Sort.by(Sort.Direction.ASC, sort);
           }
-          pageable = PageRequest.of(Integer.parseInt(page_number) - 1, Integer.parseInt(page_size), sortConfig);
+          pageable = PageRequest.of(page_number - 1, page_size, sortConfig);
         } else {
-        pageable = PageRequest.of(Integer.parseInt(page_number) - 1, Integer.parseInt(page_size));
+        pageable = PageRequest.of(page_number - 1, page_size);
       }
       Page<Beverage> result;
 
       if (alcoholic != null) {
-        result = repository.findByAlcoholic(Boolean.parseBoolean(alcoholic), pageable);
+        result = repository.findByAlcoholic(alcoholic, pageable);
       } else {
         result = repository.findAll(pageable);
       }
