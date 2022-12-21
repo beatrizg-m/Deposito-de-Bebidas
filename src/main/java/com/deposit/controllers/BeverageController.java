@@ -1,9 +1,16 @@
 package com.deposit.controllers;
 
+
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,10 +19,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.deposit.entities.Beverage;
 import com.deposit.repositories.BeverageRepository;
+
+
+
+
 
 @RestController
 public class BeverageController {
@@ -40,9 +52,33 @@ public class BeverageController {
 
     
     @GetMapping(value = "/beverages")
-    public ResponseEntity<Object> allBeverages(){
-      Pageable pageable = PageRequest.of(0, 5);
-      Page<Beverage> result = repository.findAll(pageable);
+    public ResponseEntity<Object> allBeverages(
+        @RequestParam(required = false, defaultValue = "0") String page_number,
+        @RequestParam(required = false, defaultValue = "5") String page_size,
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) String alcoholic
+      ){
+        Pageable pageable;
+        
+        if (sort != null) {
+          Sort sortConfig;
+          if(sort.substring(0, 1).equals("-")){
+            sortConfig = Sort.by(Sort.Direction.DESC, sort.substring(1));
+          } else {
+            sortConfig = Sort.by(Sort.Direction.ASC, sort);
+          }
+          pageable = PageRequest.of(Integer.parseInt(page_number) - 1, Integer.parseInt(page_size), sortConfig);
+        } else {
+        pageable = PageRequest.of(Integer.parseInt(page_number) - 1, Integer.parseInt(page_size));
+      }
+      Page<Beverage> result;
+
+      if (alcoholic != null) {
+        result = repository.findByAlcoholic(Boolean.parseBoolean(alcoholic), pageable);
+      } else {
+        result = repository.findAll(pageable);
+      }
+
       return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
