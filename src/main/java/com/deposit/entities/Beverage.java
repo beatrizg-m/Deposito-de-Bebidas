@@ -1,6 +1,7 @@
 package com.deposit.entities;
 
 import java.math.BigInteger;
+import java.util.Set;
 
 import org.hibernate.validator.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -41,6 +43,9 @@ public class Beverage {
 
     @Column(name = "volume_ml")
     private int volumeMl;
+
+    @OneToMany(mappedBy = "beverage")
+    private Set<Item> items;
    
     @JsonCreator
     public Beverage(
