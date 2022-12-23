@@ -1,6 +1,7 @@
 package com.deposit.entities;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,19 +25,22 @@ public class Item {
     private Beverage beverage;
 
     @Column(name = "units")
-    private int units;
+    private Integer units;
 
     @Column(name = "unitPrice")
-    private BigDecimal unitPrice;
+    private BigInteger unitPrice;
 
     @Column(name = "amount")
-    private BigDecimal amount;
+    private BigInteger amount;
+
+    public Item(){}
     
-    public Item(int id, int units, BigDecimal unitPrice, BigDecimal amount) {
-        this.id = id;
-        this.units = units;
-        this.unitPrice = unitPrice;
-        this.amount = amount;
+    public Item(Integer units, Beverage beverage) {
+        this.units = units;  
+        this.beverage = beverage;
+        this.unitPrice = this.beverage.getPrice();
+        this.amount = this.unitPrice.multiply(BigInteger.valueOf(this.units));
+        
     }
 
     public int getId(){
@@ -48,27 +52,27 @@ public class Item {
     }
 
 
-    public int getUnits() {
+    public Integer getUnits() {
         return units;
     }
 
-    public void setUnits(int units) {
+    public void setUnits(Integer units) {
         this.units = units;
     }
 
-    public BigDecimal getUnitPrice() {
+    public BigInteger getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(BigInteger unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public BigDecimal getAmount() {
+    public BigInteger getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(BigInteger amount) {
         this.amount = amount;
     }
 
