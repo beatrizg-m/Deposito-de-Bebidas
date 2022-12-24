@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Order {
@@ -18,6 +20,7 @@ public class Order {
     @Column(name = "order")
     private int id;
 
+    @OneToMany(mappedBy = "order")
     @Column(name = "items")
     private ArrayList<Item> items;
 

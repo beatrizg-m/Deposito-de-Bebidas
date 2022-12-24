@@ -19,7 +19,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
     @ManyToOne
     @JoinColumn(name = "beverage_id", nullable = false)
     private Beverage beverage;
@@ -32,6 +32,10 @@ public class Item {
 
     @Column(name = "amount")
     private BigInteger amount;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     public Item(){}
     
